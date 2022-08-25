@@ -1,0 +1,22 @@
+{
+	"name": "desafio",
+	"author": {
+		"url": "https://github.com/Gabriel-Alves-Cunha",
+		"email": "gabriel925486@gmail.com",
+		"name": "Gabriel Alves Cunha"
+	},
+	"main": "src/index.ts",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"dependencies": {
+		"@hapi/hapi": "^20.2.2",
+		"fastest-validator": "^1.13.0"
+	},
+	"devDependencies": {
+		"@types/hapi__hapi": "^20.0.12",
+		"typescript": "^4.7.4",
+		"vite": "^3.0.9",
+		"vitest": "^0.22.1"
+	}
+}
