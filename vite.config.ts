@@ -5,10 +5,11 @@ const outBuildDir = resolve(__dirname, "./build");
 
 export default defineConfig(({ mode }) => ({
 	test: {
-		includeSource: ["src/**/*.{js,ts}"],
-		environment: "happy-dom",
-		dir: "src/__tests__",
+		includeSource: ["src/tests/**/*.{js,ts}"],
+		// setupFiles: ["./src/tests/setupTests.ts"],
+		environment: "node",
 		logHeapUsage: true,
+		dir: "src/tests",
 		coverage: {
 			// reporter: ["html", "text"],
 			reporter: ["text"],
@@ -28,7 +29,7 @@ export default defineConfig(({ mode }) => ({
 	define: { "import.meta.vitest": "undefined" },
 	root: outBuildDir,
 	plugins: [],
-	envDir: ".",
+	envDir: "./",
 	base: "./",
 
 	build: {

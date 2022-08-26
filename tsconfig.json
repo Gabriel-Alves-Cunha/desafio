@@ -38,13 +38,16 @@
 		],
 		"paths": {
 			"@server/*": [
-				"server/*"
+				"src/server/*"
 			],
 			"@server": [
-				"server/index"
+				"src/server/index"
 			],
 			"@src/*": [
 				"src/*"
+			],
+			"@src": [
+				"src/index"
 			],
 		},
 		"lib": [
