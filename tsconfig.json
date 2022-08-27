@@ -37,17 +37,20 @@
 			"vitest/importMeta"
 		],
 		"paths": {
-			"@server/*": [
-				"src/server/*"
-			],
 			"@server": [
 				"src/server/index"
 			],
-			"@src/*": [
-				"src/*"
+			"@server/*": [
+				"src/server/*"
+			],
+			"@api/*": [
+				"src/api/*"
 			],
 			"@src": [
 				"src/index"
+			],
+			"@src/*": [
+				"src/*"
 			],
 		},
 		"lib": [

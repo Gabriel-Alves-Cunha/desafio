@@ -1,6 +1,6 @@
 import Validator from "fastest-validator";
 
-import { querySchema } from "@server/routes/cart-history/querySchema";
+import { querySchema } from "@src/validation/querySchema";
 
 const validator = new Validator();
 

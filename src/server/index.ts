@@ -25,7 +25,7 @@ export async function initServer(
 
 	await server.start();
 
-	console.log(`Server running on ${server.info.uri}...`);
+	console.log(`Server running on ${server.info.uri}`);
 
 	return server;
 }

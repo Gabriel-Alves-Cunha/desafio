@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { graphql, rest } from "msw";
 
 import { mockedFetchURL } from "../utils";
 
@@ -27,15 +27,24 @@ console.log("[On request interceptor file] cart =", cart);
  *
  * This is taken directly from 'vitest' docs.
  */
+// For some reason, nothing is being intercepted :(
 export const restHandlers = [
-	rest.all(mockedFetchURL, (_req, res, ctx) => {
-		console.log("[in rest handler]");
+	rest.all(mockedFetchURL, (req, res, ctx) => {
+		console.log("[in rest handler]", req, res, ctx);
 
 		return res(ctx.status(200), ctx.json(cart));
 	}),
 
-	// For some reason, nothing is being intercepted :(
-	rest.all("/*", (req, res, ctx) => {
-		console.log("Matched all *", req, res, ctx);
+	graphql.operation((req, res, ctx) => {
+		console.log("[in graphql handler]", req, res, ctx);
+
+		return res(
+			ctx.errors([
+				{
+					message: "Access denied",
+					positions: [1, 92],
+				},
+			])
+		);
 	}),
 ];

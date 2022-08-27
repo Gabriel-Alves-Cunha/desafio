@@ -6,10 +6,10 @@ const outBuildDir = resolve(__dirname, "./build");
 export default defineConfig(({ mode }) => ({
 	test: {
 		includeSource: ["src/tests/**/*.{js,ts}"],
-		// setupFiles: ["./src/tests/setupTests.ts"],
+		setupFiles: "../src/tests/setupTests.ts",
 		environment: "node",
 		logHeapUsage: true,
-		dir: "src/tests",
+		dir: "./src/tests",
 		coverage: {
 			// reporter: ["html", "text"],
 			reporter: ["text"],
@@ -63,6 +63,7 @@ export default defineConfig(({ mode }) => ({
 	resolve: {
 		alias: [
 			{ find: "@server", replacement: resolve(__dirname, "src/server") },
+			{ find: "@api", replacement: resolve(__dirname, "src/api") },
 			{ find: "@src", replacement: resolve(__dirname, "src") },
 		],
 	},

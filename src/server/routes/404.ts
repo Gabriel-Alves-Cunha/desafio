@@ -1,4 +1,6 @@
-import type { Request, ResponseToolkit, ServerRoute } from "@hapi/hapi";
+import type { ServerRoute } from "@hapi/hapi";
+
+import { Boom, notFound } from "@hapi/boom";
 
 /**
  * 404 errors will happen whenever your server
@@ -7,11 +9,9 @@ import type { Request, ResponseToolkit, ServerRoute } from "@hapi/hapi";
  * these errors the proper way.
  */
 export const _404Route: ServerRoute = Object.freeze({
+	handler: () => {
+		throw new Boom(notFound("Page Not Found!"));
+	},
 	path: "/{any*}",
 	method: "*",
-	handler,
 });
-
-function handler(_request: Request, _response: ResponseToolkit): string {
-	return "404 Error! Page Not Found!";
-}
