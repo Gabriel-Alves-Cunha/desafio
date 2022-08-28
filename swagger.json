@@ -1,0 +1,144 @@
+{
+	"openapi": "3.0.0",
+	"servers": [
+		{
+			"description": "A simple API for a challenge.",
+			"url": "https://virtserver.swaggerhub.com/GABRIEL925486/desafio/1.0.0"
+		}
+	],
+	"info": {
+		"description": "This is a simple API",
+		"version": "1.0.0",
+		"title": "Simple Inventory API",
+		"contact": {
+			"email": "gabriel925486@outlook.com"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
+	},
+	"tags": [
+		{
+			"name": "developers",
+			"description": "Operations available to regular developers"
+		}
+	],
+	"paths": {
+		"/top-geo-shopping": {
+			"get": {
+				"tags": ["developers"],
+				"summary": "Retorna a região com o maior número de produtos comprados.",
+				"operationId": "top-geo-shopping",
+				"description": "Retorna a região com o maior número de produtos comprados e such products.\n",
+				"responses": {
+					"200": {
+						"description": "resultado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"topRegion": {
+											"type": "object",
+											"properties": {
+												"long": { "type": "string" },
+												"lat": { "type": "string" }
+											}
+										},
+										"products": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Product"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad input parameter"
+					}
+				}
+			}
+		},
+		"/cart-history/:userId": {
+			"get": {
+				"tags": ["developers"],
+				"summary": "Receba os produtos comprados de um usuário.",
+				"operationId": "cart-history",
+				"description": "Passando o 'id' na 'query' da requisição, retorna\num JSON com o nome do cliente, email e um vetor\ncom suas últimas compras na rota 'cart-history'.\n",
+				"parameters": [
+					{
+						"in": "query",
+						"name": "userId",
+						"description": "O id do usuário.",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "resultado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CartHistoryResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad input parameter"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"CartHistoryResponse": {
+				"type": "object",
+				"required": ["products", "fullName", "email"],
+				"properties": {
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						}
+					},
+					"fullName": { "type": "string" },
+					"email": { "type": "string" }
+				}
+			},
+			"Product": {
+				"required": ["productId", "quantity"],
+				"properties": {
+					"productId": { "type": "integer" },
+					"quantity": { "type": "integer" }
+				}
+			},
+			"TopGeoLocationResponse": {
+				"required": ["products", "topRegion"],
+				"properties": {
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						}
+					},
+					"topRegion": {
+						"type": "object",
+						"properties": {
+							"long": { "type": "string" },
+							"lat": { "type": "string" }
+						}
+					}
+				}
+			}
+		}
+	}
+}
