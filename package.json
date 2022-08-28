@@ -7,6 +7,7 @@
 	},
 	"main": "src/server.ts",
 	"version": "0.0.1",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"run:docker": "echo 'run on your terminal `sudo docker run -p 3000:3000 -d desafio`, it will return an id that you can use to kill it later.'",
@@ -18,7 +19,6 @@
 		"ts:check": "tsc --noEmit --pretty --extendedDiagnostics",
 		"build:app": "vite build"
 	},
-	"license": "MIT",
 	"dependencies": {
 		"fastest-validator": "^1.14.0",
 		"koa": "^2.13.4",
