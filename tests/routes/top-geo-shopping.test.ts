@@ -1,6 +1,9 @@
-import type { TopGeoLocationResponse } from "@server/routes/top-geo-shopping";
+import type { TopGeoLocationResponse } from "@controllers/top-geo-shopping";
 
 import { describe, test, expect } from "vitest";
+import request from "supertest";
+
+import { app } from "@src/app";
 
 ///////////////////////////////////////
 ///////////////////////////////////////
@@ -10,10 +13,11 @@ describe("Testing route '/top-geo-shopping'", () => {
 	///////////////////////////////////////
 
 	test("Testing if route succeeds and response is correct", async () => {
-		const res = await fetch("http://0.0.0.0:3000/top-geo-shopping");
-		const topRegion: TopGeoLocationResponse = await res.json();
+		const {
+			body: { data: topRegion },
+		} = await request(app.callback()).get("/top-geo-shopping");
 
-		const expected: TopGeoLocationResponse = {
+		const topRegionExpected: TopGeoLocationResponse = {
 			topRegion: {
 				lat: "-37.3159",
 				long: "81.1496",
@@ -27,8 +31,6 @@ describe("Testing route '/top-geo-shopping'", () => {
 			],
 		};
 
-		// console.log("topRegion =", topRegion, "expected =", expected);
-
-		expect(topRegion).toEqual(expected);
+		expect(topRegion).toEqual(topRegionExpected);
 	});
 });

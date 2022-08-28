@@ -1,6 +1,4 @@
-import type { Request, ResponseToolkit, ServerRoute } from "@hapi/hapi";
-
-import { Boom, badImplementation } from "@hapi/boom";
+import type { Context } from "koa";
 
 import { type GeoLocation, getAllUsers } from "@api/user";
 import { type Product, getAllCarts } from "@api/cart";
@@ -13,28 +11,17 @@ import { type Product, getAllCarts } from "@api/cart";
 /**
  * Retorna a região com o maior número de produtos comprados.
  */
-export const topGeoShoppingRoute: ServerRoute = Object.freeze({
-	path: "/top-geo-shopping",
-	method: "GET",
-	handler,
-});
+export async function topGeoShopping(ctx: Context): Promise<void> {
+	ctx.type = "json";
 
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-// Helper function:
-
-async function handler(
-	_request: Request,
-	_response: ResponseToolkit
-): Promise<TopGeoLocationResponse> {
 	const [allCarts, allUsers] = await Promise.all([
 		await getAllCarts(),
 		await getAllUsers(),
 	]).catch(err => {
-		console.error("Error getting all carts and all users!", err);
+		ctx.body = { data: null, error: "Error getting all carts and all users!" };
+		ctx.status = 400;
 
-		throw new Boom(badImplementation("Error getting all carts and all users!"));
+		throw err;
 	});
 
 	let mostProductsBoughByRegion: TopGeoLocationResponse = {
@@ -45,10 +32,15 @@ async function handler(
 	allCarts.forEach(cart => {
 		const user = allUsers.find(({ id }) => id === cart.userId);
 
-		if (user === undefined)
-			throw new Boom(
-				badImplementation(`User with id = \`${cart.userId}\` was not found!`)
+		if (user === undefined) {
+			const error = new Error(
+				`User with id = \`${cart.userId}\` was not found!`
 			);
+
+			ctx.app.emit("error", error, ctx);
+
+			return;
+		}
 
 		const thisRegion: TopGeoLocationResponse = {
 			topRegion: user.address.geolocation,
@@ -68,9 +60,7 @@ async function handler(
 			mostProductsBoughByRegion = thisRegion;
 	});
 
-	console.log("mostProductsBoughByRegion =", mostProductsBoughByRegion);
-
-	return mostProductsBoughByRegion;
+	ctx.body = { data: mostProductsBoughByRegion, error: null };
 }
 
 ///////////////////////////////////////

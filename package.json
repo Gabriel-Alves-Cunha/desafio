@@ -5,25 +5,36 @@
 		"email": "gabriel925486@gmail.com",
 		"name": "Gabriel Alves Cunha"
 	},
-	"main": "src/index.ts",
+	"main": "src/server.ts",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"test": "cross-env NODE_OPTIONS=--experimental-fetch vitest --no-threads",
-		"start": "cross-env NODE_OPTIONS=--experimental-fetch node"
+		"run:docker": "echo 'run on your terminal `sudo docker run -p 3000:3000 -d desafio`, it will return an id that you can use to kill it later.'",
+		"docker:docs": "echo 'Access https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ to know how to use docker ;)'",
+		"build:docker": "echo 'run on your terminal this: `sudo docker build . -t desafio`'",
+		"kill:docker": "echo 'run on your terminal `sudo docker kill <docker-id>`'",
+		"start": "node --trace-warnings --experimental-fetch build/server.js",
+		"test": "cross-env NODE_OPTIONS=--experimental-fetch vitest",
+		"ts:check": "tsc --noEmit --pretty --extendedDiagnostics",
+		"build:app": "vite build"
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@hapi/boom": "^10.0.0",
-		"@hapi/hapi": "^20.2.2",
-		"fastest-validator": "^1.13.0"
+		"fastest-validator": "^1.14.0",
+		"koa": "^2.13.4",
+		"koa-bodyparser": "^4.3.0",
+		"koa-router": "^12.0.0"
 	},
 	"devDependencies": {
-		"@types/hapi__hapi": "^20.0.12",
+		"@types/koa": "^2.13.5",
+		"@types/koa-bodyparser": "^4.3.7",
+		"@types/koa-router": "^7.4.4",
+		"@types/supertest": "^2.0.12",
 		"cross-env": "^7.0.3",
-		"msw": "^0.45.0",
+		"supertest": "^6.2.4",
 		"typescript": "^4.8.2",
 		"vite": "^3.0.9",
+		"vite-plugin-node": "^1.0.0",
 		"vitest": "^0.22.1"
 	}
 }

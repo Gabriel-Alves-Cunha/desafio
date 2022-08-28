@@ -37,21 +37,15 @@
 			"vitest/importMeta"
 		],
 		"paths": {
-			"@server": [
-				"src/server/index"
-			],
-			"@server/*": [
-				"src/server/*"
+			"@controllers/*": [
+				"src/controllers/*"
 			],
 			"@api/*": [
 				"src/api/*"
 			],
-			"@src": [
-				"src/index"
-			],
 			"@src/*": [
 				"src/*"
-			],
+			]
 		},
 		"lib": [
 			"DOM.Iterable",
@@ -62,7 +56,6 @@
 	"exclude": [
 		"**/node_modules",
 		"**/.*/",
-		"app",
-		"out"
+		"build"
 	]
 }

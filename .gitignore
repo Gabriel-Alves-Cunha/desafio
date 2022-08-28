@@ -4,6 +4,9 @@ logs
 yarn-debug.log*
 yarn-error.log*
 
+# Build directory
+build/
+
 # Coverage directory used by tools like istanbul
 coverage
 

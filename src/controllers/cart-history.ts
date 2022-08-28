@@ -1,6 +1,4 @@
-import type { Request, ResponseToolkit, ServerRoute } from "@hapi/hapi";
-
-import { Boom, badRequest, notFound } from "@hapi/boom";
+import type { Context } from "koa";
 
 import { type Product, getCart } from "@api/cart";
 import { queryValidator } from "@src/validation/validator";
@@ -16,52 +14,44 @@ import { getUser } from "@api/user";
  * um JSON com o nome do cliente, email e um vetor
  * com suas últimas compras na rota 'cart-history'.
  */
-export const cartHistoryRoute: ServerRoute = Object.freeze({
-	path: "/cart-history/{userId}",
-	method: "GET",
-	handler,
-});
+export async function cartHistory(ctx: Context): Promise<void> {
+	ctx.type = "json";
 
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-// Helper function:
-
-async function handler(
-	request: Request,
-	_response: ResponseToolkit
-): Promise<CartHistoryResponse> {
 	// Get query params:
-	// @ts-ignore => 'hapi' shows with dot notation:
-	const userId: UserID = Number(request.params.userId);
+	// @ts-ignore => `ctx.params` does exists:
+	const userId = Number(ctx.params.userId);
 
 	// Validate params:
 	const isValidOrError = queryValidator(userId);
-
-	if (isValidOrError !== true)
-		throw new Boom(
-			badRequest(
-				`Param field "userId" must be a defined positive integer number. Received: \`${userId}\`, with type: \`${typeof userId}\`.`,
-				isValidOrError
-			)
+	if (isValidOrError !== true) {
+		const error = new Error(
+			`Param field "userId" must be a defined positive integer number. Received: \`${userId}\`, with type: \`${typeof userId}\`.`
 		);
+
+		ctx.body = { data: null, error: error.message };
+		ctx.app.emit("error", error, ctx);
+		ctx.status = 400;
+
+		return;
+	}
 
 	const [cart, user] = await Promise.all([
 		await getCart(userId),
 		await getUser(userId),
 	]).catch(err => {
-		console.error("Error getting cart and user!", err);
+		ctx.body = { data: null, error: "Error getting cart and user!" };
+		ctx.status = 400;
 
-		throw new Boom(notFound("Error getting cart and user!"));
+		throw err;
 	});
 
-	const response: CartHistoryResponse = {
+	const data: CartHistoryResponse = {
 		fullName: `${user.name.firstname} ${user.name.lastname}`,
 		products: cart.products,
 		email: user.email,
 	};
 
-	return response;
+	ctx.body = { data, error: null };
 }
 
 ///////////////////////////////////////
