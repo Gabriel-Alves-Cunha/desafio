@@ -4,7 +4,7 @@ import { configDefaults, defineConfig } from "vitest/config";
 import { VitePluginNode } from "vite-plugin-node";
 import { resolve } from "node:path";
 
-const outBuildDir = resolve(__dirname, "./build");
+const buildOutputDirectory = resolve(__dirname, "./build");
 
 export default defineConfig(({ mode }) => {
 	const isDev = mode === "development";
@@ -35,26 +35,30 @@ export default defineConfig(({ mode }) => {
 		plugins: [
 			...VitePluginNode({
 				// Nodejs native Request adapter
-				// currently this plugin support 'express', 'nest', 'koa' and 'fastify' out of box,
-				// you can also pass a function if you are using other frameworks, see Custom Adapter section
+				// currently this plugin support 'express',
+				// 'nest', 'koa' and 'fastify' out of box,
+				// you can also pass a function if you are
+				// using other frameworks, see Custom Adapter
+				// section
 				adapter: "koa",
 
 				// tell the plugin where is your project entry
 				appPath: "../src/server.ts",
 
 				// Optional, default: 'viteNodeApp'
-				// the name of named export of you app from the appPath file
+				// the name of named export of you
+				// app from the appPath file
 				exportName: "server",
 			}),
 		],
-		root: outBuildDir,
+		root: buildOutputDirectory,
 		envDir: "./",
 		base: "./",
 
 		build: {
 			chunkSizeWarningLimit: 1_000,
 			reportCompressedSize: false,
-			outDir: outBuildDir,
+			outDir: buildOutputDirectory,
 			emptyOutDir: true,
 			target: "node14",
 			sourcemap: isDev,
